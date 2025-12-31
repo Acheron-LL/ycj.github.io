@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正弦型函数y = A sin(wx + φ)图象变化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e6e6e6;
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1600px;
+        }
+        
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #4cc9f0, #4361ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .function-formula {
+            font-size: 1.6rem;
+            color: #a0a0c0;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 25px;
+            width: 100%;
+            max-width: 1600px;
+            justify-content: center;
+            align-items: flex-start;
+            flex: 1;
+        }
+        
+        .controls-container {
+            width: 380px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+        
+        .graph-container {
+            flex: 1;
+            min-width: 1100px;
+            height: 720px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .graph-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .graph-title {
+            font-size: 1.4rem;
+            color: #4cc9f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .graph-title span {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .current-function-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 320px;
+        }
+        
+        .current-title {
+            font-size: 1rem;
+            color: #a0a0c0;
+            margin-bottom: 5px;
+        }
+        
+        .current-function {
+            font-size: 1.6rem;
+            color: #f72585;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .control-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #4cc9f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .control-title span {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .slider-group {
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .param-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .param-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f72585;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        .range-inputs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .range-input {
+            flex: 1;
+        }
+        
+        .range-input label {
+            display: block;
+            font-size: 0.85rem;
+            color: #a0a0c0;
+            margin-bottom: 5px;
+        }
+        
+        .range-input input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .slider-label {
+            font-weight: 600;
+            color: #72efdd;
+            font-size: 0.9rem;
+            width: 80px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #4cc9f0;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
+            border: 2px solid #fff;
+        }
+        
+        .slider-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .control-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e6e6e6;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(76, 201, 240, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .reset-btn {
+            width: auto;
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            background: rgba(76, 201, 240, 0.1);
+            color: #4cc9f0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            background: rgba(76, 201, 240, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .graph-area {
+            width: 100%;
+            height: calc(100% - 60px);
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        canvas {
+            display: block;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1600px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+        
+        .sin-legend { background-color: #4cc9f0; }
+        .point-legend { background-color: #ffcc00; }
+        .center-legend { background-color: #f72585; }
+        .axis-legend { 
+            background: repeating-linear-gradient(
+                90deg,
+                #4aff4a,
+                #4aff4a 5px,
+                transparent 5px,
+                transparent 10px
+            );
+        }
+        
+        .author-footer {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            color: rgba(160, 160, 192, 0.4);
+            font-size: 0.7rem;
+            font-family: 'Courier New', monospace;
+            text-align: right;
+            z-index: 10;
+        }
+        
+        @media (max-width: 1550px) {
+            .container {
+                flex-direction: row;
+                align-items: stretch;
+                gap: 20px;
+            }
+            
+            .controls-container {
+                width: 350px;
+                height: auto;
+            }
+            
+            .graph-container {
+                min-width: unset;
+                height: 680px;
+            }
+            
+            .current-function-box {
+                min-width: 280px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .function-formula {
+                font-size: 1.4rem;
+            }
+        }
+        
+        @media (max-width: 1300px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .controls-container, .graph-container {
+                width: 95%;
+                min-width: unset;
+            }
+            
+            .graph-container {
+                height: 600px;
+            }
+            
+            .graph-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .current-function-box {
+                width: 100%;
+                min-width: unset;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .function-formula {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                gap: 15px;
+            }
+            
+            .controls-container, .graph-container {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .graph-container {
+                height: 500px;
+            }
+            
+            .legend {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>正弦型函数y = A sin(wx + φ)图象变化</h1>
+    </div>
+    
+    <div class="container">
+        <div class="controls-container">
+            <h2 class="control-title"><span>📊</span> 参数控制</h2>
+            
+            <div class="slider-group">
+                <div class="slider-header">
+                    <div class="param-name">振幅 A</div>
+                    <div class="param-value" id="aValue">1.0</div>
+                </div>
+                <div class="range-inputs">
+                    <div class="range-input">
+                        <label>最小值</label>
+                        <input type="number" id="aMin" value="-5" step="0.1">
+                    </div>
+                    <div class="range-input">
+                        <label>最大值</label>
+                        <input type="number" id="aMax" value="5" step="0.1">
+                    </div>
+                </div>
+                <div class="slider-wrapper">
+                    <span class="slider-label" id="aRangeLabel">-5 → 5</span>
+                    <input type="range" class="slider" id="aSlider" min="-5" max="5" step="0.1" value="1.0">
+                    <div class="slider-controls">
+                        <button class="control-btn" id="aAutoToggle">⏯️</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-header">
+                    <div class="param-name">角速度 w</div>
+                    <div class="param-value" id="wValue">1.0</div>
+                </div>
+                <div class="range-inputs">
+                    <div class="range-input">
+                        <label>最小值</label>
+                        <input type="number" id="wMin" value="0" step="1">
+                    </div>
+                    <div class="range-input">
+                        <label>最大值</label>
+                        <input type="number" id="wMax" value="6" step="1">
+                    </div>
+                </div>
+                <div class="slider-wrapper">
+                    <span class="slider-label" id="wRangeLabel">0 → 6</span>
+                    <input type="range" class="slider" id="wSlider" min="0" max="6" step="1" value="1">
+                    <div class="slider-controls">
+                        <button class="control-btn" id="wAutoToggle">⏯️</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-header">
+                    <div class="param-name">初相 φ</div>
+                    <div class="param-value" id="phiValue">0.0</div>
+                </div>
+                <div class="range-inputs">
+                    <div class="range-input">
+                        <label>最小值</label>
+                        <input type="number" id="phiMin" value="-10" step="0.1">
+                    </div>
+                    <div class="range-input">
+                        <label>最大值</label>
+                        <input type="number" id="phiMax" value="10" step="0.1">
+                    </div>
+                </div>
+                <div class="slider-wrapper">
+                    <span class="slider-label" id="phiRangeLabel">-10 → 10</span>
+                    <input type="range" class="slider" id="phiSlider" min="-10" max="10" step="0.1" value="0.0">
+                    <div class="slider-controls">
+                        <button class="control-btn" id="phiAutoToggle">⏯️</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; display: flex; justify-content: center;">
+                <button class="reset-btn" id="resetBtn">重置参数</button>
+            </div>
+        </div>
+        
+        <div class="graph-container">
+            <div class="graph-header">
+                <h2 class="graph-title"><span>📈</span> 函数图象</h2>
+                <div class="current-function-box">
+                    <div class="current-function" id="currentFunction">y = 1.0 sin(1.0x + 0.0)</div>
+                </div>
+            </div>
+            
+            <div class="graph-area">
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color sin-legend"></div>
+            <span>正弦函数曲线</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color point-legend"></div>
+            <span>特殊点 (0, A) 和 (0, -A)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color center-legend"></div>
+            <span>对称中心 (加粗)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color axis-legend"></div>
+            <span>对称轴 (虚线)</span>
+        </div>
+    </div>
+
+    <div class="author-footer">
+        Interactive visualization created by ycj<br>
+        Powered by DeepSeek AI
+    </div>
+
+    <script>
+        // 获取Canvas元素和上下文
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 获取控制元素
+        const aSlider = document.getElementById('aSlider');
+        const wSlider = document.getElementById('wSlider');
+        const phiSlider = document.getElementById('phiSlider');
+        
+        // 获取范围输入元素
+        const aMinInput = document.getElementById('aMin');
+        const aMaxInput = document.getElementById('aMax');
+        const wMinInput = document.getElementById('wMin');
+        const wMaxInput = document.getElementById('wMax');
+        const phiMinInput = document.getElementById('phiMin');
+        const phiMaxInput = document.getElementById('phiMax');
+        
+        // 获取范围标签元素
+        const aRangeLabel = document.getElementById('aRangeLabel');
+        const wRangeLabel = document.getElementById('wRangeLabel');
+        const phiRangeLabel = document.getElementById('phiRangeLabel');
+        
+        const aValue = document.getElementById('aValue');
+        const wValue = document.getElementById('wValue');
+        const phiValue = document.getElementById('phiValue');
+        
+        const aAutoToggle = document.getElementById('aAutoToggle');
+        const wAutoToggle = document.getElementById('wAutoToggle');
+        const phiAutoToggle = document.getElementById('phiAutoToggle');
+        
+        const currentFunction = document.getElementById('currentFunction');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // 参数状态
+        let params = {
+            A: 1.0,
+            w: 1.0,
+            φ: 0.0
+        };
+        
+        // 范围限制
+        let ranges = {
+            A: { min: -5, max: 5 },
+            w: { min: 0, max: 6 },
+            φ: { min: -10, max: 10 }
+        };
+        
+        // 自动动画状态
+        let autoAnimations = {
+            A: { active: false, direction: 1, speed: 0.01 },
+            w: { active: false, direction: 1, speed: 0.002 },
+            φ: { active: false, direction: 1, speed: 0.005 }
+        };
+        
+        // 动画ID
+        let animationId = null;
+        
+        // 验证输入值，确保不超过±100
+        function validateRangeInput(value, paramName) {
+            const numValue = parseFloat(value);
+            
+            if (isNaN(numValue)) {
+                return false;
+            }
+            
+            if (Math.abs(numValue) > 100) {
+                alert('不能超过±100哦，Ciallo ～(∠・ω< )⌒★!');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 更新滑块范围
+        function updateSliderRange(slider, minInput, maxInput, rangeLabel, paramName, rangesKey) {
+            const minValue = parseFloat(minInput.value);
+            const maxValue = parseFloat(maxInput.value);
+            
+            if (!validateRangeInput(minValue, paramName + "最小值") || !validateRangeInput(maxValue, paramName + "最大值")) {
+                // 如果验证失败，恢复原来的值
+                minInput.value = ranges[rangesKey].min;
+                maxInput.value = ranges[rangesKey].max;
+                return;
+            }
+            
+            if (minValue >= maxValue) {
+                return;
+            }
+            
+            // 更新范围
+            ranges[rangesKey].min = minValue;
+            ranges[rangesKey].max = maxValue;
+            
+            // 更新滑块属性
+            slider.min = minValue;
+            slider.max = maxValue;
+            
+            // 确保当前值在新范围内
+            let currentValue = parseFloat(slider.value);
+            if (currentValue < minValue) {
+                currentValue = minValue;
+                slider.value = currentValue;
+                params[rangesKey] = currentValue;
+            } else if (currentValue > maxValue) {
+                currentValue = maxValue;
+                slider.value = currentValue;
+                params[rangesKey] = currentValue;
+            }
+            
+            // 更新范围标签
+            rangeLabel.textContent = `${minValue.toFixed(1)} → ${maxValue.toFixed(1)}`;
+            
+            // 更新显示
+            updateParamDisplay();
+            drawGraph();
+        }
+        
+        // 初始化Canvas尺寸
+        function initCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+        
+        // 更新参数显示
+        function updateParamDisplay() {
+            aValue.textContent = params.A.toFixed(1);
+            wValue.textContent = params.w.toFixed(1);  // w值保留1位小数
+            phiValue.textContent = params.φ.toFixed(1);
+            
+            currentFunction.textContent = `y = ${params.A.toFixed(1)} sin(${params.w.toFixed(1)}x + ${params.φ.toFixed(1)})`;
+        }
+        
+        // 绘制坐标轴箭头
+        function drawAxisArrows(ctx, width, height, originX, originY) {
+            const arrowSize = 12;
+            
+            // 绘制X轴箭头（向右）
+            ctx.beginPath();
+            ctx.moveTo(width - 10, originY);
+            ctx.lineTo(width - 10 - arrowSize, originY - arrowSize/2);
+            ctx.moveTo(width - 10, originY);
+            ctx.lineTo(width - 10 - arrowSize, originY + arrowSize/2);
+            ctx.strokeStyle = '#FF6B6B';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 标注X轴文字
+            ctx.fillStyle = '#FF6B6B';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('x', width - 25, originY - 10);
+            
+            // 绘制Y轴箭头（向上）
+            ctx.beginPath();
+            ctx.moveTo(originX, 10);
+            ctx.lineTo(originX - arrowSize/2, 10 + arrowSize);
+            ctx.moveTo(originX, 10);
+            ctx.lineTo(originX + arrowSize/2, 10 + arrowSize);
+            ctx.strokeStyle = '#4ECDC4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 标注Y轴文字
+            ctx.fillStyle = '#4ECDC4';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'right';
+            ctx.fillText('y', originX - 10, 25);
+        }
+        
+        // 绘制函数图象
+        function drawGraph() {
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // 计算坐标系参数
+            const scaleX = width / (6 * Math.PI); // 显示范围：-3π 到 3π
+            const scaleY = height * 0.2;
+            const originX = width / 2;
+            const originY = height / 2;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, width, height);
+            
+            // 绘制网格
+            drawGrid(ctx, width, height, 40);
+            
+            // 绘制坐标轴
+            ctx.beginPath();
+            ctx.moveTo(0, originY);
+            ctx.lineTo(width, originY);
+            ctx.moveTo(originX, 0);
+            ctx.lineTo(originX, height);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)'; // 更亮的坐标轴颜色
+            ctx.lineWidth = 2; // 更粗的坐标轴
+            ctx.stroke();
+            
+            // 绘制坐标轴箭头和标注
+            drawAxisArrows(ctx, width, height, originX, originY);
+            
+            // 标记特殊点和特殊位置
+            markSpecialPoints(ctx, originX, originY, scaleX, scaleY);
+            
+            // 绘制正弦曲线
+            ctx.beginPath();
+            ctx.strokeStyle = '#4cc9f0';
+            ctx.lineWidth = 3;
+            
+            const startX = -3 * Math.PI; // 扩展显示范围
+            const endX = 3 * Math.PI;    // 扩展显示范围
+            
+            for (let x = startX; x <= endX; x += 0.01) {
+                const y = params.A * Math.sin(params.w * x + params.φ);
+                const canvasX = originX + x * scaleX;
+                const canvasY = originY - y * scaleY;
+                
+                if (x === startX) {
+                    ctx.moveTo(canvasX, canvasY);
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            
+            ctx.stroke();
+            
+            // 标记X轴范围
+            ctx.fillStyle = '#e6e6e6';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('-3π', originX - 3 * Math.PI * scaleX, originY + 20);
+            ctx.fillText('-2π', originX - 2 * Math.PI * scaleX, originY + 20);
+            ctx.fillText('-π', originX - Math.PI * scaleX, originY + 20);
+            ctx.fillText('0', originX, originY + 20);
+            ctx.fillText('π', originX + Math.PI * scaleX, originY + 20);
+            ctx.fillText('2π', originX + 2 * Math.PI * scaleX, originY + 20);
+            ctx.fillText('3π', originX + 3 * Math.PI * scaleX, originY + 20);
+        }
+        
+        // 绘制网格
+        function drawGrid(ctx, width, height, gridSize) {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 0.5;
+            
+            // 绘制垂直线
+            for (let x = 0; x <= width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // 绘制水平线
+            for (let y = 0; y <= height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+        }
+        
+        // 标记特殊点：对称中心、对称轴、(0, A) 和 (0, -A)
+        function markSpecialPoints(ctx, originX, originY, scaleX, scaleY) {
+            const A = params.A;
+            const w = params.w;
+            const φ = params.φ;
+            
+            // 1. 标记 (0, A) 和 (0, -A) 点（加粗）
+            ctx.fillStyle = '#ffcc00';
+            
+            // 点 (0, A)
+            const pointAY = originY - A * scaleY;
+            ctx.beginPath();
+            ctx.arc(originX, pointAY, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#ffcc00';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // 标注文字 (0, A)
+            ctx.fillStyle = '#ffcc00';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'right';
+            ctx.fillText(`(0, ${A.toFixed(1)})`, originX - 10, pointAY - 15);
+            
+            // 点 (0, -A)
+            const pointMinusAY = originY - (-A) * scaleY;
+            ctx.beginPath();
+            ctx.arc(originX, pointMinusAY, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#ffcc00';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // 标注文字 (0, -A)
+            ctx.fillText(`(0, -${A.toFixed(1)})`, originX - 10, pointMinusAY + 25);
+            
+            // 2. 标记对称中心（加粗）
+            // 正弦函数的对称中心为 (kπ - φ)/w
+            ctx.fillStyle = '#f72585';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            // 计算并标记以π/18为单位的对称中心
+            for (let k = -6; k <= 6; k++) {
+                const centerX = (k * Math.PI - φ) / w;
+                
+                // 检查是否在显示范围内（-3π到3π）
+                if (centerX >= -3 * Math.PI && centerX <= 3 * Math.PI) {
+                    const canvasX = originX + centerX * scaleX;
+                    
+                    // 绘制对称中心点（加粗）
+                    ctx.beginPath();
+                    ctx.arc(canvasX, originY, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.strokeStyle = '#f72585';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // 标注x坐标（以π/18为单位）
+                    const inPiUnits = centerX / Math.PI;
+                    const inPi18Units = inPiUnits * 18;
+                    
+                    // 只标注主要位置
+                    if (Math.abs(inPiUnits) === 0 || Math.abs(inPiUnits) === 1 || 
+                        Math.abs(inPiUnits) === 2 || Math.abs(inPiUnits) === 3) {
+                        let label = '';
+                        
+                        if (inPiUnits === 0) {
+                            label = '0';
+                        } else if (inPiUnits === 1) {
+                            label = 'π';
+                        } else if (inPiUnits === -1) {
+                            label = '-π';
+                        } else if (inPiUnits === 2) {
+                            label = '2π';
+                        } else if (inPiUnits === -2) {
+                            label = '-2π';
+                        } else if (inPiUnits === 3) {
+                            label = '3π';
+                        } else if (inPiUnits === -3) {
+                            label = '-3π';
+                        } else if (Math.abs(inPi18Units - Math.round(inPi18Units)) < 0.01) {
+                            const numerator = Math.round(inPi18Units);
+                            const gcdVal = gcd(Math.abs(numerator), 18);
+                            const simplifiedNum = numerator / gcdVal;
+                            const simplifiedDen = 18 / gcdVal;
+                            
+                            if (simplifiedDen === 1) {
+                                label = `${simplifiedNum}π`;
+                            } else {
+                                label = `${simplifiedNum}π/${simplifiedDen}`;
+                            }
+                        }
+                        
+                        if (label) {
+                            ctx.fillStyle = '#f72585';
+                            ctx.font = 'bold 12px Arial';
+                            ctx.fillText(label, canvasX, originY + 25);
+                        }
+                    }
+                }
+            }
+            
+            // 3. 标记对称轴（虚线）
+            // 正弦函数的对称轴为 x = (π/2 + kπ - φ)/w
+            ctx.strokeStyle = '#4aff4a';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]); // 虚线
+            
+            // 计算并标记以π/18为单位的对称轴
+            for (let k = -6; k <= 6; k++) {
+                const axisX = (Math.PI/2 + k * Math.PI - φ) / w;
+                
+                // 检查是否在显示范围内
+                if (axisX >= -3 * Math.PI && axisX <= 3 * Math.PI) {
+                    const canvasX = originX + axisX * scaleX;
+                    
+                    // 绘制对称轴线
+                    ctx.beginPath();
+                    ctx.moveTo(canvasX, 0);
+                    ctx.lineTo(canvasX, canvas.height);
+                    ctx.stroke();
+                    
+                    // 标注x坐标（以π/18为单位）
+                    const inPiUnits = axisX / Math.PI;
+                    
+                    // 只标注主要位置
+                    if (Math.abs(inPiUnits - 0.5) < 0.01 || Math.abs(inPiUnits + 0.5) < 0.01 ||
+                        Math.abs(inPiUnits - 1.5) < 0.01 || Math.abs(inPiUnits + 1.5) < 0.01 ||
+                        Math.abs(inPiUnits - 2.5) < 0.01 || Math.abs(inPiUnits + 2.5) < 0.01) {
+                        
+                        let label = '';
+                        if (Math.abs(inPiUnits - 0.5) < 0.01) {
+                            label = 'π/2';
+                        } else if (Math.abs(inPiUnits + 0.5) < 0.01) {
+                            label = '-π/2';
+                        } else if (Math.abs(inPiUnits - 1.5) < 0.01) {
+                            label = '3π/2';
+                        } else if (Math.abs(inPiUnits + 1.5) < 0.01) {
+                            label = '-3π/2';
+                        } else if (Math.abs(inPiUnits - 2.5) < 0.01) {
+                            label = '5π/2';
+                        } else if (Math.abs(inPiUnits + 2.5) < 0.01) {
+                            label = '-5π/2';
+                        }
+                        
+                        if (label) {
+                            ctx.fillStyle = '#4aff4a';
+                            ctx.font = 'bold 12px Arial';
+                            ctx.fillText(label, canvasX, 25);
+                        }
+                    }
+                }
+            }
+            
+            ctx.setLineDash([]); // 恢复实线
+        }
+        
+        // 计算最大公约数（用于简化分数）
+        function gcd(a, b) {
+            if (b === 0) return a;
+            return gcd(b, a % b);
+        }
+        
+        // 更新滑块值
+        function updateSlidersFromParams() {
+            aSlider.value = params.A;
+            wSlider.value = params.w;
+            phiSlider.value = params.φ;
+        }
+        
+        // 处理自动动画
+        function updateAutoAnimations() {
+            // 更新A参数
+            if (autoAnimations.A.active) {
+                params.A += autoAnimations.A.speed * autoAnimations.A.direction;
+                
+                if (params.A >= ranges.A.max) {
+                    params.A = ranges.A.max;
+                    autoAnimations.A.direction = -1;
+                } else if (params.A <= ranges.A.min) {
+                    params.A = ranges.A.min;
+                    autoAnimations.A.direction = 1;
+                }
+                
+                aSlider.value = params.A;
+            }
+            
+            // 更新w参数
+            if (autoAnimations.w.active) {
+                params.w += autoAnimations.w.speed * autoAnimations.w.direction;
+                
+                if (params.w >= ranges.w.max) {
+                    params.w = ranges.w.max;
+                    autoAnimations.w.direction = -1;
+                } else if (params.w <= ranges.w.min) {
+                    params.w = ranges.w.min;
+                    autoAnimations.w.direction = 1;
+                }
+                
+                wSlider.value = params.w;
+            }
+            
+            // 更新φ参数
+            if (autoAnimations.φ.active) {
+                params.φ += autoAnimations.φ.speed * autoAnimations.φ.direction;
+                
+                if (params.φ >= ranges.φ.max) {
+                    params.φ = ranges.φ.max;
+                    autoAnimations.φ.direction = -1;
+                } else if (params.φ <= ranges.φ.min) {
+                    params.φ = ranges.φ.min;
+                    autoAnimations.φ.direction = 1;
+                }
+                
+                phiSlider.value = params.φ;
+            }
+            
+            // 更新显示
+            updateParamDisplay();
+            
+            // 重绘图
+            drawGraph();
+            
+            // 继续动画
+            animationId = requestAnimationFrame(updateAutoAnimations);
+        }
+        
+        // 初始化
+        function init() {
+            // 设置Canvas尺寸
+            initCanvas();
+            
+            // 初始绘图
+            drawGraph();
+            
+            // 更新参数显示
+            updateParamDisplay();
+            
+            // 事件监听：窗口大小改变
+            window.addEventListener('resize', () => {
+                initCanvas();
+                drawGraph();
+            });
+            
+            // 事件监听：滑块变化
+            aSlider.addEventListener('input', () => {
+                params.A = parseFloat(aSlider.value);
+                updateParamDisplay();
+                drawGraph();
+            });
+            
+            wSlider.addEventListener('input', () => {
+                params.w = parseFloat(wSlider.value);
+                updateParamDisplay();
+                drawGraph();
+            });
+            
+            phiSlider.addEventListener('input', () => {
+                params.φ = parseFloat(phiSlider.value);
+                updateParamDisplay();
+                drawGraph();
+            });
+            
+            // 事件监听：范围输入变化
+            aMinInput.addEventListener('change', () => {
+                updateSliderRange(aSlider, aMinInput, aMaxInput, aRangeLabel, "振幅A", "A");
+            });
+            
+            aMaxInput.addEventListener('change', () => {
+                updateSliderRange(aSlider, aMinInput, aMaxInput, aRangeLabel, "振幅A", "A");
+            });
+            
+            wMinInput.addEventListener('change', () => {
+                updateSliderRange(wSlider, wMinInput, wMaxInput, wRangeLabel, "角速度w", "w");
+            });
+            
+            wMaxInput.addEventListener('change', () => {
+                updateSliderRange(wSlider, wMinInput, wMaxInput, wRangeLabel, "角速度w", "w");
+            });
+            
+            phiMinInput.addEventListener('change', () => {
+                updateSliderRange(phiSlider, phiMinInput, phiMaxInput, phiRangeLabel, "初相φ", "φ");
+            });
+            
+            phiMaxInput.addEventListener('change', () => {
+                updateSliderRange(phiSlider, phiMinInput, phiMaxInput, phiRangeLabel, "初相φ", "φ");
+            });
+            
+            // 事件监听：自动切换按钮
+            aAutoToggle.addEventListener('click', () => {
+                autoAnimations.A.active = !autoAnimations.A.active;
+                aAutoToggle.textContent = autoAnimations.A.active ? '⏸️' : '⏯️';
+                aAutoToggle.style.background = autoAnimations.A.active ? 'rgba(76, 201, 240, 0.3)' : '';
+                
+                if (autoAnimations.A.active && !animationId) {
+                    updateAutoAnimations();
+                }
+            });
+            
+            wAutoToggle.addEventListener('click', () => {
+                autoAnimations.w.active = !autoAnimations.w.active;
+                wAutoToggle.textContent = autoAnimations.w.active ? '⏸️' : '⏯️';
+                wAutoToggle.style.background = autoAnimations.w.active ? 'rgba(76, 201, 240, 0.3)' : '';
+                
+                if (autoAnimations.w.active && !animationId) {
+                    updateAutoAnimations();
+                }
+            });
+            
+            phiAutoToggle.addEventListener('click', () => {
+                autoAnimations.φ.active = !autoAnimations.φ.active;
+                phiAutoToggle.textContent = autoAnimations.φ.active ? '⏸️' : '⏯️';
+                phiAutoToggle.style.background = autoAnimations.φ.active ? 'rgba(76, 201, 240, 0.3)' : '';
+                
+                if (autoAnimations.φ.active && !animationId) {
+                    updateAutoAnimations();
+                }
+            });
+            
+            // 事件监听：重置按钮
+            resetBtn.addEventListener('click', () => {
+                params.A = 1.0;
+                params.w = 1.0;
+                params.φ = 0.0;
+                
+                // 恢复默认范围
+                ranges.A = { min: -5, max: 5 };
+                ranges.w = { min: 0, max: 6 };
+                ranges.φ = { min: -10, max: 10 };
+                
+                // 更新范围输入框
+                aMinInput.value = -5;
+                aMaxInput.value = 5;
+                wMinInput.value = 0;
+                wMaxInput.value = 6;
+                phiMinInput.value = -10;
+                phiMaxInput.value = 10;
+                
+                // 更新范围标签
+                aRangeLabel.textContent = '-5 → 5';
+                wRangeLabel.textContent = '0 → 6';
+                phiRangeLabel.textContent = '-10 → 10';
+                
+                // 停止所有自动动画
+                autoAnimations.A.active = false;
+                autoAnimations.w.active = false;
+                autoAnimations.φ.active = false;
+                
+                aAutoToggle.textContent = '⏯️';
+                wAutoToggle.textContent = '⏯️';
+                phiAutoToggle.textContent = '⏯️';
+                
+                aAutoToggle.style.background = '';
+                wAutoToggle.style.background = '';
+                phiAutoToggle.style.background = '';
+                
+                // 停止动画循环
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+                
+                updateSlidersFromParams();
+                updateParamDisplay();
+                drawGraph();
+            });
+        }
+        
+        // 启动应用
+        init();
+    </script>
+</body>
+</html>
